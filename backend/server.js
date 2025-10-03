@@ -17,6 +17,13 @@ app.get('/api/config', (req, res) => {
   });
 });
 
+app.get('/api/app-config', (req, res) => {
+  res.json({
+    splitPercentage: process.env.SPLIT_PERCENTAGE || 50,
+    iframeUrl: process.env.IFRAME_URL || 'https://www.google.com/search?igu=1'
+  });
+});
+
 app.get('/api/random-photo', async (req, res) => {
   if (!UNSPLASH_ACCESS_KEY || !UNSPLASH_USERNAME) {
     return res.status(500).json({ error: 'Unsplash credentials are not configured.' });

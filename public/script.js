@@ -1,6 +1,7 @@
 const photoContainer = document.getElementById('photo-container');
 const photographerLink = document.getElementById('photographer-link');
 const infoOverlay = document.getElementById('info-overlay');
+const iframe = document.getElementById('website-iframe');
 
 // Get references to all the info elements
 const photoDescription = document.getElementById('photo-description');
@@ -11,14 +12,25 @@ const infoFocalLength = document.getElementById('info-focal-length');
 const infoExposure = document.getElementById('info-exposure');
 const infoIso = document.getElementById('info-iso');
 
-async function fetchConfig() {
+async function fetchPhotoConfig() {
   try {
     const response = await fetch('/api/config');
     const config = await response.json();
     return config.refreshInterval * 1000; // convert to milliseconds
   } catch (error) {
-    console.error('Error fetching config:', error);
+    console.error('Error fetching photo config:', error);
     return 900 * 1000; // default to 15 minutes
+  }
+}
+
+async function fetchAppConfig() {
+  try {
+    const response = await fetch('/api/app-config');
+    const config = await response.json();
+    return config;
+  } catch (error) {
+    console.error('Error fetching app config:', error);
+    return { splitPercentage: 50, iframeUrl: 'about:blank' };
   }
 }
 
@@ -71,7 +83,11 @@ async function fetchAndDisplayPhoto() {
 }
 
 async function init() {
-  const refreshInterval = await fetchConfig();
+  const appConfig = await fetchAppConfig();
+  document.documentElement.style.setProperty('--split-percentage', `${appConfig.splitPercentage}%`);
+  iframe.src = appConfig.iframeUrl;
+
+  const refreshInterval = await fetchPhotoConfig();
   fetchAndDisplayPhoto(); // Initial load
   setInterval(fetchAndDisplayPhoto, refreshInterval);
 }

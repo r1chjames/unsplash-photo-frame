@@ -1,3 +1,7 @@
+:root {
+  --split-percentage: 50%;
+}
+
 body, html {
   margin: 0;
   padding: 0;
@@ -7,13 +11,31 @@ body, html {
   background-color: #111;
 }
 
-#photo-container {
+#app-container {
+  display: flex;
   width: 100%;
+  height: 100%;
+}
+
+#photo-container {
+  width: var(--split-percentage);
   height: 100%;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
+}
+
+#iframe-container {
+  width: calc(100% - var(--split-percentage));
+  height: 100%;
+  border: none;
+}
+
+#website-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 #attribution {
