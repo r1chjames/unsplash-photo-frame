@@ -12,5 +12,8 @@ node backend/server.js &
 # Wait for the server to start
 sleep 5
 
+# Run unclutter in the background to hide the mouse after 1 sec
+unclutter -idle 1 &
+
 # Launch Chromium
-chromium --kiosk --incognito --noerrdialogs --disable-translate http://localhost:8080
+luakit http://localhost:3000
