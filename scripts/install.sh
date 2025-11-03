@@ -1,0 +1,1 @@
+sudo apt install nodejs npm unclutter luakit -y
