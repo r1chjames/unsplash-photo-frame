@@ -13,4 +13,4 @@ node backend/server.js &
 sleep 5
 
 # Launch Chromium
-chromium-browser --kiosk --incognito --noerrdialogs --disable-translate http://localhost:8080
+chromium --kiosk --incognito --noerrdialogs --disable-translate http://localhost:8080
