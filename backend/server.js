@@ -59,18 +59,24 @@ const server = app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
+const gracefulShutdown = (signal) => {
+  console.log(`${signal} received. Shutting down gracefully...`);
   server.close(() => {
-    console.log('HTTP server closed');
+    console.log('Closed out remaining connections.');
     process.exit(0);
   });
+
+  // If after 2 seconds, force shutdown
+  setTimeout(() => {
+    console.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 2000);
+};
+
+process.on('SIGTERM', () => {
+  gracefulShutdown('SIGTERM');
 });
 
 process.on('SIGINT', () => {
-  console.log('SIGINT signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-    process.exit(0);
-  });
+  gracefulShutdown('SIGINT');
 });
