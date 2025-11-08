@@ -25,4 +25,4 @@ sleep 5
 unclutter -idle 1 &
 
 # Launch Luakit (the config file we made earlier will make it fullscreen)
-luakit http://localhost:3000
+luakit http://localhost:3000 > "$APP_DIR/scripts/luakit.log" 2>&1
